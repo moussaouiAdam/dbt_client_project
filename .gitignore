@@ -1,0 +1,19 @@
+# Dossiers générés par dbt
+target/
+dbt_packages/
+logs/
+.user.yml
+
+# Environnement Python
+.venv/
+venv/
+__pycache__/
+
+# Secrets (ne JAMAIS les pousser sur GitHub)
+.env
+*.env
+
+# Système
+.DS_Store
+Thumbs.db
+.vscode/

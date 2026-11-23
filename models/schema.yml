@@ -1,0 +1,54 @@
+# =====================================================================
+# schema.yml : documentation et tests des modèles
+# (nécessite dbt >= 1.10 pour la syntaxe "arguments:")
+# =====================================================================
+version: 2
+
+models:
+  # ------------------------------------------------------------- BRONZE
+  - name: bronze_client
+    description: "Copie brute de CUSTOMER_LOYALTY, sans transformation (VIEW)"
+    columns:
+      - name: customer_id
+        description: "Identifiant du client"
+        data_tests:
+          - unique
+          - not_null
+
+  # ------------------------------------------------------------- SILVER
+  - name: silver_client
+    description: "Clients nettoyés, standardisés et enrichis (TABLE)"
+    columns:
+      - name: customer_id
+        data_tests:
+          - unique
+          - not_null
+      - name: email
+        description: "Email en minuscules"
+        data_tests:
+          - not_null
+      - name: age
+        description: "Âge calculé à partir de la date de naissance"
+        data_tests:
+          - not_null
+
+  # --------------------------------------------------------------- GOLD
+  - name: gold_client
+    description: "Clients avec indicateurs de commandes et segment business (TABLE)"
+    columns:
+      - name: customer_id
+        data_tests:
+          - unique
+          - not_null
+      - name: client_segment
+        description: "PLATINUM / GOLD / SILVER / BRONZE selon le montant dépensé"
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ['PLATINUM', 'GOLD', 'SILVER', 'BRONZE']
+      - name: total_orders
+        data_tests:
+          - not_null
+      - name: total_spent
+        data_tests:
+          - not_null

@@ -1,0 +1,23 @@
+# =====================================================================
+# profiles.yml : connexion à Snowflake
+# ---------------------------------------------------------------------
+# ⚠️ AUCUN mot de passe en clair ici : ce fichier est poussé sur GitHub.
+# Les informations sensibles sont lues dans des variables d'environnement
+# (voir le README, étape 3).
+# =====================================================================
+dbt_client_project:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"   # ex : monorg-moncompte
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD') }}"
+      # Si ton compte impose le MFA, décommente la ligne suivante :
+      # authenticator: username_password_mfa
+
+      role: tasty_data_engineer
+      warehouse: tasty_de_wh
+      database: frostbyte_tasty_bytes
+      schema: dbt_adam          # schéma de travail personnel
+      threads: 4

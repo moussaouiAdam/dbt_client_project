@@ -1,0 +1,24 @@
+# =====================================================================
+# sources.yml : déclaration des tables brutes Snowflake
+# On les appelle ensuite dans le SQL avec {{ source('schema', 'table') }}
+# =====================================================================
+version: 2
+
+sources:
+  - name: raw_customer
+    description: "Données brutes du programme de fidélité Tasty Bytes"
+    database: frostbyte_tasty_bytes
+    schema: raw_customer
+    tables:
+      - name: customer_loyalty
+        description: "Un membre du programme de fidélité par ligne"
+
+  - name: raw_pos
+    description: "Données brutes des caisses (point of sale) des food trucks"
+    database: frostbyte_tasty_bytes
+    schema: raw_pos
+    tables:
+      - name: order_header
+        description: "En-tête de commande : une ligne par commande"
+      - name: order_detail
+        description: "Détail de commande : une ligne par article commandé"

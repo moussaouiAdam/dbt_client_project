@@ -1,0 +1,40 @@
+# =====================================================================
+# dbt_project.yml : configuration générale du projet dbt
+# =====================================================================
+name: 'dbt_client_project'
+version: '1.0.0'
+
+# Nom du profil de connexion (doit correspondre à la clé dans profiles.yml)
+profile: 'dbt_client_project'
+
+# Où dbt va chercher les différents types de fichiers
+model-paths: ["models"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+analysis-paths: ["analyses"]
+seed-paths: ["seeds"]
+snapshot-paths: ["snapshots"]
+
+# Dossiers générés par dbt (à ne pas versionner, voir .gitignore)
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+# ---------------------------------------------------------------------
+# Matérialisations par couche (Medallion Architecture)
+#   +materialized : view (virtuelle, recalculée) ou table (stockée)
+#   +schema       : schéma personnalisé ajouté au schéma cible
+#                   ex : DBT_ADAM + _BRONZE  ->  DBT_ADAM_BRONZE
+# ---------------------------------------------------------------------
+models:
+  dbt_client_project:
+    bronze:
+      +materialized: view
+      +schema: bronze
+    silver:
+      +materialized: table
+      +schema: silver
+    gold:
+      +materialized: table
+      +schema: gold
